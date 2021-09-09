@@ -1,0 +1,3 @@
+flow project deploy --network=emulator
+
+# flow accounts create --key de3678f8262ba24a8f77c12f2fffb7f4220ca231fb60b5b3fdddb6031e52c3e48a65b030e36baecfab93e0713ceb86069d827c0549947f75fe9a3b90b98afa3f --signer emulator-account

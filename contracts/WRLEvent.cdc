@@ -3,15 +3,15 @@ import Lilium from 0xLILIUM
 pub contract WRLEvent {
     pub struct Event {
       pub let name: String;
-      pub let participants: [Address; 3];
-      pub let rewards: [UFix64; 3];
+      pub let participants: [Address; 35];
+      pub let rewards: [UFix64; 35];
       pub let baseReward: UFix64;
       pub let end: Bool;
 
       init(
           name: String,
-          participants: [Address; 3],
-          rewards: [UFix64; 3],
+          participants: [Address; 35],
+          rewards: [UFix64; 35],
           baseReward: UFix64
       ) {
         self.name = name;

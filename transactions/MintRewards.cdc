@@ -2,7 +2,7 @@ import Lilium from 0xLILIUM
 import WRLEvent from 0xWRLEVENT
 import FungibleToken from 0xFUNGIBLE
 
-transaction(eventName: String, stands: [Address; 3]) {
+transaction(eventName: String, stands: [Address; 35]) {
     let tokenAdmin: &Lilium.Administrator
     let eventsRef: &WRLEvent.Events
 

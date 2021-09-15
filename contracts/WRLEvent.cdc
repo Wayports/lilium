@@ -1,4 +1,4 @@
-import Lilium from 0xf8d6e0586b0a20c7
+import Lilium from 0xLILIUM
 
 pub contract WRLEvent {
     pub struct Event {
@@ -7,7 +7,7 @@ pub contract WRLEvent {
       pub let rewards: [UFix64; 3];
       pub let baseReward: UFix64;
       pub let end: Bool;
-      
+
       init(
           name: String,
           participants: [Address; 3],
@@ -49,11 +49,6 @@ pub contract WRLEvent {
 
         pub fun getEvent(name: String): Event {
             return self.events[name] ?? panic("Event not found");
-        } 
-    }
-
-    pub resource Validator {
-        pub fun validate(eventName: String) {
         }
     }
 

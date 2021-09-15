@@ -13,7 +13,6 @@ import (
 )
 
 func mintToken(recipientAddress string, transactionPath string) {
-	// flowClient, err := client.New("localhost:3569", grpc.WithInsecure())
 	flowClient, err := client.New("access.testnet.nodes.onflow.org:9000", grpc.WithInsecure())
 
 	ctx := context.Background()
@@ -26,16 +25,13 @@ func mintToken(recipientAddress string, transactionPath string) {
 
 	sigAlgoName := "ECDSA_P256"
 
-	creatorAddress = flow.HexToAddress("5e29a986bb1ed7ce") // Use f8d6e0586b0a20c7 for emulator and 5e29a986bb1ed7ce for testnet
+	creatorAddress = flow.HexToAddress("")
 	creatorAccount, err := flowClient.GetAccountAtLatestBlock(context.Background(),
 		creatorAddress)
 	creatorAccountKey = creatorAccount.Keys[0]
 
-	// fmt.Printf("Creator Address: %v\n", creatorAccount);
-
 	creatorSigAlgo := crypto.StringToSignatureAlgorithm(sigAlgoName)
-	// creatorPrivateKey, err := crypto.DecodePrivateKeyHex(creatorSigAlgo, "0cb293c5b160cb30a7b0a4c62876a13942f2b6defbfc29e32602599c7a5318e4")
-	creatorPrivateKey, err := crypto.DecodePrivateKeyHex(creatorSigAlgo, "bcb708b7a56e5dbb592341ed412245f8bf849361633cb67eecb6bca936253435")
+	creatorPrivateKey, err := crypto.DecodePrivateKeyHex(creatorSigAlgo, "")
 	creatorSigner = crypto.NewInMemorySigner(creatorPrivateKey, creatorAccountKey.HashAlgo)
 
 	tx := flow.NewTransaction()

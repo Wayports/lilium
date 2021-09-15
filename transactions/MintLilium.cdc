@@ -1,8 +1,5 @@
-// import Lilium from 0xf8d6e0586b0a20c7
-// import FungibleToken from 0xee82856bf20e2aa6
-
-import Lilium from 0x5e29a986bb1ed7ce
-import FungibleToken from 0x9a0766d93b6608b7
+import Lilium from 0xLILIUM
+import FungibleToken from 0xFUNGIBLE
 
 transaction(recipient: Address, amount: UFix64) {
     let tokenAdmin: &Lilium.Administrator

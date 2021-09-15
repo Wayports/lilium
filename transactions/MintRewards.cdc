@@ -1,6 +1,6 @@
-import Lilium from 0xf8d6e0586b0a20c7
-import WRLEvent from 0xf8d6e0586b0a20c7
-import FungibleToken from 0xee82856bf20e2aa6
+import Lilium from 0xLILIUM
+import WRLEvent from 0xWRLEVENT
+import FungibleToken from 0xFUNGIBLE
 
 transaction(eventName: String, stands: [Address; 3]) {
     let tokenAdmin: &Lilium.Administrator

@@ -1,36 +1,16 @@
 import FungibleToken from 0x9a0766d93b6608b7
-/// import FungibleToken from 0xee82856bf20e2aa6
 
 pub contract Lilium: FungibleToken {
-
-    /// Total supply of ExampleTokens in existence
     pub var totalSupply: UFix64
-
-    /// Maximun supply of tokens that can be minted
-    /// pub var maxSupply: UFix64
-
-    /// TokensInitialized
-    ///
-    /// The event that is emitted when the contract is created
-    pub event TokensInitialized(initialSupply: UFix64)
-
-    /// TokensWithdrawn
-    ///
-    /// The event that is emitted when tokens are withdrawn from a Vault
-    pub event TokensWithdrawn(amount: UFix64, from: Address?)
-
-    /// TokensDeposited
-    ///
-    /// The event that is emitted when tokens are deposited to a Vault
-    pub event TokensDeposited(amount: UFix64, to: Address?)
-
-    pub event TokensMinted(amount: UFix64)
-
-    pub event TokensBurned(amount: UFix64)
-
-    pub event MinterCreated(allowedAmount: UFix64)
+    pub var maxSupply: UFix64
 
     pub event BurnerCreated()
+    pub event TokensMinted(amount: UFix64)
+    pub event TokensBurned(amount: UFix64)
+    pub event MinterCreated(allowedAmount: UFix64)
+    pub event TokensInitialized(initialSupply: UFix64)
+    pub event TokensDeposited(amount: UFix64, to: Address?)
+    pub event TokensWithdrawn(amount: UFix64, from: Address?)
 
     pub resource Vault: FungibleToken.Provider, FungibleToken.Receiver, FungibleToken.Balance {
         pub var balance: UFix64
@@ -105,24 +85,17 @@ pub contract Lilium: FungibleToken {
     }
 
     init() {
-        self.totalSupply = 1000.0
+        self.totalSupply = 1_000.0
+        self.maxSupply = 100_000_000.0
 
-        // Create the Vault with the total supply of tokens and save it in storage
-        //
         let vault <- create Vault(balance: self.totalSupply)
         self.account.save(<-vault, to: /storage/liliumVault)
 
-        // Create a public capability to the stored Vault that only exposes
-        // the `deposit` method through the `Receiver` interface
-        //
         self.account.link<&{FungibleToken.Receiver}>(
             /public/liliumReceiver,
             target: /storage/liliumVault
         )
 
-        // Create a public capability to the stored Vault that only exposes
-        // the `balance` field through the `Balance` interface
-        //
         self.account.link<&Lilium.Vault{FungibleToken.Balance}>(
             /public/liliumBalance,
             target: /storage/liliumVault
@@ -131,8 +104,6 @@ pub contract Lilium: FungibleToken {
         let admin <- create Administrator()
         self.account.save(<-admin, to: /storage/liliumAdmin)
 
-        // Emit an event that shows that the contract was initialized
-        //
         emit TokensInitialized(initialSupply: self.totalSupply)
     }
 }

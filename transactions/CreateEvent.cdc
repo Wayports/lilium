@@ -1,4 +1,4 @@
-import WRLEvent from 0xf8d6e0586b0a20c7 
+import WRLEvent from 0xWRLEVENT
 
 transaction(
     eventName: String,

@@ -5,9 +5,6 @@
       "serviceAccount": "emulator-account"
     }
   },
-  "contracts": {
-    "Lilium": "./contracts/Lilium.cdc"
-  },
   "networks": {
     "emulator": "127.0.0.1:3569",
     "mainnet": "access.mainnet.nodes.onflow.org:9000",
@@ -16,19 +13,39 @@
   "accounts": {
     "emulator-account": {
       "address": "f8d6e0586b0a20c7",
-      "key": "0cb293c5b160cb30a7b0a4c62876a13942f2b6defbfc29e32602599c7a5318e4"
+      "keys": "5da7f1564956e928a40b4fbc1739e67b0d5d4e2dad0ab43eaa0198369b6ed0a1"
     },
     "testnet-account": {
-      "address": "5e29a986bb1ed7ce",
-      "key": "bcb708b7a56e5dbb592341ed412245f8bf849361633cb67eecb6bca936253435"
+      "address": "a9e5922489486101",
+      "keys": "68ee617d9bf67a4677af80aaca5a090fcda80ff2f4dbc340e0e36201fa1f1d8c"
+    },
+    "emulator-user": {
+      "address": "01cf0e2f2f715450",
+      "keys": "ab977a921d98d8dde09bc5bc968645a84d743ee74cd99b246551237dcb83c840"
+    },
+    "emulator-user-1": {
+      "address": "01cf0e2f2f715450",
+      "keys": "11a1ef07a8da254f3c1741a0d68ed63b352c6f699733f81fe218161d10cff1b8"
+    },
+    "emulator-user-2": {
+      "address": "179b6b1cb6755e31",
+      "keys": "dc307bb692f62de6c2118ce0960f38c31c41fb854566590844337529124c4240"
+    },
+    "emulator-user-3": {
+      "address": "f3fcd2c1a78f5eee",
+      "keys": "eb6038047b5e7a9290d58b3d79165727a425e8cfcf50dec9dfb65f0616829abc"
     }
+  },
+  "contracts": {
+    "Lilium": "./contracts/Lilium.cdc",
+    "WRLEvent": "./contracts/WRLEvent.cdc"
   },
   "deployments": {
     "emulator": {
-      "emulator-account": ["Lilium"]
+      "emulator-account": ["Lilium", "WRLEvent"]
     },
     "testnet": {
-      "testnet-account": ["Lilium"]
+      "testnet-account": ["Lilium", "WRLEvent"]
     }
   }
 }

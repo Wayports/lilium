@@ -1,1 +1,0 @@
-flow transactions send ./coin/cadance/contracts/MintRewards.cdc --args-json '[{"type": "String", "value": "WRL_S1_R1"}, {"type":"Array","value":[{"type":"Address","value":"0xf3fcd2c1a78f5eef"},{"type":"Address","value":"0x179b6b1cb6755e31"},{"type":"Address","value":"0x01cf0e2f2f715450"}]}]' --signer emulator-account

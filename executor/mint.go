@@ -25,13 +25,13 @@ func mintToken(recipientAddress string, transactionPath string) {
 
 	sigAlgoName := "ECDSA_P256"
 
-	creatorAddress = flow.HexToAddress("")
+	creatorAddress = flow.HexToAddress("5e29a986bb1ed7ce")
 	creatorAccount, err := flowClient.GetAccountAtLatestBlock(context.Background(),
 		creatorAddress)
 	creatorAccountKey = creatorAccount.Keys[0]
 
 	creatorSigAlgo := crypto.StringToSignatureAlgorithm(sigAlgoName)
-	creatorPrivateKey, err := crypto.DecodePrivateKeyHex(creatorSigAlgo, "")
+	creatorPrivateKey, err := crypto.DecodePrivateKeyHex(creatorSigAlgo, "bcb708b7a56e5dbb592341ed412245f8bf849361633cb67eecb6bca936253435")
 	creatorSigner = crypto.NewInMemorySigner(creatorPrivateKey, creatorAccountKey.HashAlgo)
 
 	tx := flow.NewTransaction()

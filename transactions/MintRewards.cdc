@@ -1,28 +1,33 @@
-import Lilium from 0xLILIUM
-import WRLEvent from 0xWRLEVENT
-import FungibleToken from 0xFUNGIBLE
+import Lilium from 0xf8d6e0586b0a20c7
+import WRLEvent from 0xf8d6e0586b0a20c7
+import FungibleToken from 0xee82856bf20e2aa6
 
-transaction(eventName: String, stands: [Address; 35]) {
+transaction(eventPath: StoragePath) {
     let tokenAdmin: &Lilium.Administrator
-    let eventsRef: &WRLEvent.Events
+    let eventRef: &WRLEvent.Event
+    let stands: [Address]
+    let baseReward: UFix64
 
     prepare(signer: AuthAccount) {
         self.tokenAdmin = signer
             .borrow<&Lilium.Administrator>(from: /storage/liliumAdmin)
             ?? panic("Signer is not the token admin")
 
-        self.eventsRef = signer.borrow<&WRLEvent.Events>(from: /storage/events)
+        self.eventRef = signer.borrow<&WRLEvent.Event>(from: eventPath)
             ?? panic("Signer is not the events admin")
+
+        self.stands = self.eventRef.sortByTime()
+
+        self.baseReward = self.eventRef.baseReward
     }
 
     execute {
-        let currentEvent = self.eventsRef.getEvent(name: eventName);
-        let baseReward = currentEvent.baseReward;
+        let baseReward = self.eventRef.baseReward;
 
         var position = 0;
-        for recipient in stands {
-            if currentEvent.isParticipant(account: recipient) {
-                let liliumAmount = currentEvent.rewards[position] + baseReward
+        for recipient in self.stands {
+            if self.eventRef.isParticipant(account: recipient) {
+                let liliumAmount = self.eventRef.rewards[position] + baseReward
                 let minter <- self.tokenAdmin.createNewMinter(allowedAmount: liliumAmount)
 
                 let mintedVault <- minter.mintTokens(

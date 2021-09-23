@@ -1,5 +1,5 @@
-import Lilium from 0xLILIUM
-import FungibleToken from 0xFUNGIBLE
+import Lilium from 0xf8d6e0586b0a20c7
+import FungibleToken from 0xf8d6e0586b0a20c7
 
 transaction {
     prepare(signer: AuthAccount) {

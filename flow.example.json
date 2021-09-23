@@ -6,7 +6,8 @@
     }
   },
   "contracts": {
-    "Lilium": "./contracts/Lilium.cdc"
+    "Lilium": "./contracts/Lilium.cdc",
+    "WRLEvent": "./contracts/WRLEvent.cdc"
   },
   "networks": {
     "emulator": "127.0.0.1:3569",
@@ -25,10 +26,10 @@
   },
   "deployments": {
     "emulator": {
-      "emulator-account": ["Lilium"]
+      "emulator-account": ["Lilium", "WRLEvent"]
     },
     "testnet": {
-      "testnet-account": ["Lilium"]
+      "testnet-account": ["Lilium", "WRLEvent"]
     }
   }
 }

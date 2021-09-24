@@ -1,3 +1,8 @@
+ /*
+ * Copyright (C) Wayports, Inc.
+ *
+ * SPDX-License-Identifier: (MIT)
+ */
 
 // This transaction is a template for a transaction
 // to add a Vault resource to their account

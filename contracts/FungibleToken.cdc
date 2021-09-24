@@ -1,3 +1,9 @@
+ /*
+ * Copyright (C) Wayports, Inc.
+ *
+ * SPDX-License-Identifier: (MIT)
+ */
+
 /**
 
 # The Flow Fungible Token standard

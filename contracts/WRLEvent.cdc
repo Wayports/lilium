@@ -1,3 +1,9 @@
+ /*
+ * Copyright (C) Wayports, Inc.
+ *
+ * SPDX-License-Identifier: (MIT)
+ */
+
 import Lilium from 0xa9e5922489486101
 
 pub contract WRLEvent {

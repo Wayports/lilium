@@ -1,3 +1,9 @@
+ /*
+ * Copyright (C) Wayports, Inc.
+ *
+ * SPDX-License-Identifier: (MIT)
+ */
+
 // This transaction is a template for a transaction that
 // could be used by the admin account to burn tokens
 // from their stored Vault

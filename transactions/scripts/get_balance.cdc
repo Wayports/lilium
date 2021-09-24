@@ -1,5 +1,10 @@
-// This script reads the balance field of an account's FlowToken Balance
+ /*
+ * Copyright (C) Wayports, Inc.
+ *
+ * SPDX-License-Identifier: (MIT)
+ */
 
+// This script reads the balance field of an account's FlowToken Balance
 import FungibleToken from 0xFUNGIBLETOKENADDRESS
 import Lilium from 0xTOKENADDRESS
 

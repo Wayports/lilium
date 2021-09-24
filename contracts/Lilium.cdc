@@ -1,3 +1,9 @@
+ /*
+ * Copyright (C) Wayports, Inc.
+ *
+ * SPDX-License-Identifier: (MIT)
+ */
+
 import FungibleToken from 0xFUNGIBLETOKENADDRESS
 
 pub contract Lilium: FungibleToken {

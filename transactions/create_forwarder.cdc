@@ -1,5 +1,10 @@
-/**
+ /*
+ * Copyright (C) Wayports, Inc.
+ *
+ * SPDX-License-Identifier: (MIT)
+ */
 
+/**
 This transaction is a template for a transaction that could be used
 to set up an account to forward deposited tokens to another receiver.
 

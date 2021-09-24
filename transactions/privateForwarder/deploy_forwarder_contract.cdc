@@ -1,3 +1,9 @@
+ /*
+ * Copyright (C) Wayports, Inc.
+ *
+ * SPDX-License-Identifier: (MIT)
+ */
+
 transaction(contractName: String, code: [UInt8], senderStoragePath: StoragePath, storagePath: StoragePath, publicPath: PublicPath) {
 
   prepare(signer: AuthAccount) {

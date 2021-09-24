@@ -1,16 +1,16 @@
-import FlowToken from 0xFLOW
-import FungibleToken from 0xFUNGIBLE
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import Lilium from 0xTOKENADDRESS
 
 transaction(recipient: Address, amount: UFix64) {
-    let tokenAdmin: &FlowToken.Administrator
+    let tokenAdmin: &Lilium.Administrator
     let tokenReceiver: &{FungibleToken.Receiver}
 
     prepare(signer: AuthAccount) {
-        self.tokenAdmin = signer.borrow<&FlowToken.Administrator>(from: /storage/flowTokenAdmin)
+        self.tokenAdmin = signer.borrow<&Lilium.Administrator>(from: /storage/liliumAdmin)
             ?? panic("Signer is not the token admin")
 
         self.tokenReceiver = getAccount(recipient)
-            .getCapability(/public/flowTokenReceiver)
+            .getCapability(/public/liliumReceiver)
             .borrow<&{FungibleToken.Receiver}>()
             ?? panic("Unable to borrow receiver reference")
     }

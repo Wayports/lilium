@@ -1,4 +1,4 @@
-import Lilium from 0xLILIUM
+import Lilium from 0xa9e5922489486101
 
 pub contract WRLEvent {
     pub resource interface Validable {
@@ -8,10 +8,49 @@ pub contract WRLEvent {
     }
 
     pub resource interface ResultSetter {
-        pub fun setResults(stands: {Address:UInt64});
+        pub fun setResults(stands: {Address:UInt64})
     }
 
-    pub resource Event: Validable, ResultSetter {
+    pub resource interface GetEventInfo {
+        pub fun getEventInfo(): EventInfo
+    }
+
+    pub struct EventInfo {
+      pub let name: String
+      pub let baseReward: UFix64
+      pub let rewards: [UFix64; 3]
+      pub let participants: [Address; 3]
+
+      pub var finished: Bool
+      pub var validations: Int
+      pub var  resultsUpdated: Bool
+      pub var finalStands: {Address:UInt64}
+      pub var penalties: {Address:UInt64}
+
+      init(
+        _ name: String
+        _ baseReward: UFix64
+        _ rewards: [UFix64; 3]
+        _ participants: [Address; 3]
+        _ finished: Bool
+        _ validations: Int
+        _ resultsUpdated: Bool
+        _ finalStands: {Address:UInt64}
+        _ penalties: {Address:UInt64}
+      ) {
+        self.name = name
+        self.participants = participants
+        self.rewards = rewards
+        self.baseReward = baseReward
+        self.finished = finished
+        self.resultsUpdated = resultsUpdated
+        self.validations = validations
+        self.finalStands = finalStands;
+        self.penalties = penalties;
+      }
+    }
+
+    pub resource Event: Validable, ResultSetter, GetEventInfo {
       pub let name: String
       pub let baseReward: UFix64
       pub let rewards: [UFix64; 3]
@@ -40,14 +79,18 @@ pub contract WRLEvent {
         self.penalties = {};
       }
 
+      pub fun getEventId(): String {
+          return self.name
+      }
+
       pub fun isParticipant(account: Address): Bool {
           for address in self.participants {
               if account == address {
-                  return true;
+                  return true
               }
           }
 
-          return false;
+          return false
       }
 
       pub fun setResults(stands: {Address:UInt64}) {
@@ -116,6 +159,20 @@ pub contract WRLEvent {
 
           return rewardOrder;
       }
+
+      pub fun getEventInfo(): EventInfo {
+          return EventInfo(
+            self.name,
+            self.baseReward,
+            self.rewards,
+            self.participants,
+            self.finished,
+            self.validations,
+            self.resultsUpdated,
+            self.finalStands,
+            self.penalties,
+        )
+      }
     }
 
     pub fun createSteward(): @Steward {
@@ -127,22 +184,37 @@ pub contract WRLEvent {
     }
 
     pub resource interface ValidatorReceiver {
-        pub fun receiveValidator(cap: Capability<&WRLEvent.Event{WRLEvent.Validable}>)
+        pub fun receiveValidator(cap: Capability<&WRLEvent.Event{WRLEvent.Validable, WRLEvent.GetEventInfo}>)
+    }
+
+    pub resource interface EventId {
+        pub fun getEventId(): String
     }
 
     pub resource Steward: ValidatorReceiver {
-        pub var validateEventCapability: Capability<&WRLEvent.Event{WRLEvent.Validable}>?
+        pub var validateEventCapability: Capability<&WRLEvent.Event{WRLEvent.Validable, WRLEvent.GetEventInfo}>?
 
         init() {
             self.validateEventCapability = nil;
         }
 
-        pub fun receiveValidator(cap: Capability<&WRLEvent.Event{WRLEvent.Validable}>) {
+        pub fun receiveValidator(cap: Capability<&WRLEvent.Event{WRLEvent.Validable, WRLEvent.GetEventInfo}>) {
             pre {
                 cap.borrow() != nil: "Invalid Validator capability";
             }
 
             self.validateEventCapability = cap;
+        }
+
+
+        pub fun getEventInfo(): EventInfo {
+            pre {
+                self.validateEventCapability != nil: "No event info capability"
+            }
+
+            let eventRef = self.validateEventCapability!.borrow()!
+
+            return eventRef.getEventInfo()
         }
 
         pub fun validateEvent() {

@@ -1,0 +1,36 @@
+{
+  "emulators": {
+    "default": {
+      "port": 3569,
+      "serviceAccount": "emulator-account"
+    }
+  },
+  "contracts": {
+    "Lilium": "./coin/cadance/contracts/Lilium.cdc",
+    "FungibleToken": "./coin/cadance/contracts/FungibleToken.cdc",
+    "WRLEvent": "./coin/cadance/contracts/WRLEvent.cdc"
+  },
+  "networks": {
+    "emulator": "127.0.0.1:3569",
+    "mainnet": "access.mainnet.nodes.onflow.org:9000",
+    "testnet": "access.devnet.nodes.onflow.org:9000"
+  },
+  "accounts": {
+    "emulator-account": {
+      "address": "f8d6e0586b0a20c7",
+      "key": "7aaceac985b8fa3322595ead3ea882b54a8b3987916a762559a2c4e3881d30ab"
+    },
+    "testnet-account": {
+      "address": "b044301894fbcfa6",
+      "keys": "d4435824840ccd77a2415f1d747e4fdd324a86c7739d5daad3fed1b2b7736221"
+    }
+  },
+  "deployments": {
+    "emulator": {
+      "emulator-account": ["Lilium", "WRLEvent"]
+    },
+    "testnet": {
+      "testnet-account": ["Lilium", "WRLEvent"]
+    }
+  }
+}

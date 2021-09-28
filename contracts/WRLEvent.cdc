@@ -5,6 +5,7 @@
  */
 
 import Lilium from 0xa9e5922489486101
+// import Lilium from 0xf8d6e0586b0a20c7
 
 pub contract WRLEvent {
     pub resource interface Validable {
@@ -185,42 +186,67 @@ pub contract WRLEvent {
         return <- create Steward()
     }
 
+    pub fun createEventViewer(): @EventViewer {
+        return <- create EventViewer()
+    }
+
     pub fun createBot(): @Bot {
         return <- create Bot()
     }
 
     pub resource interface ValidatorReceiver {
-        pub fun receiveValidator(cap: Capability<&WRLEvent.Event{WRLEvent.Validable, WRLEvent.GetEventInfo}>)
+        pub fun receiveValidator(cap: Capability<&WRLEvent.Event{WRLEvent.Validable}>)
+    }
+
+    pub resource interface EventViewerReceiver {
+        pub fun receiveEventViewer(cap: Capability<&WRLEvent.Event{WRLEvent.GetEventInfo}>)
+
+        pub fun getEventInfo(): EventInfo
     }
 
     pub resource interface EventId {
         pub fun getEventId(): String
     }
 
+    pub resource EventViewer: EventViewerReceiver {
+        pub var eventInfoCapability: Capability<&WRLEvent.Event{WRLEvent.GetEventInfo}>?
+
+        init() {
+            self.eventInfoCapability = nil
+        }
+
+        pub fun receiveEventViewer(cap: Capability<&WRLEvent.Event{WRLEvent.GetEventInfo}>) {
+            pre {
+                cap.borrow() != nil: "Invalid Event Info Capability"
+            }
+
+            self.eventInfoCapability = cap;
+        }
+
+        pub fun getEventInfo(): EventInfo {
+            pre {
+                self.eventInfoCapability != nil: "No event info capability"
+            }
+
+            let eventRef = self.eventInfoCapability!.borrow()!
+
+            return eventRef.getEventInfo()
+        }
+    }
+
     pub resource Steward: ValidatorReceiver {
-        pub var validateEventCapability: Capability<&WRLEvent.Event{WRLEvent.Validable, WRLEvent.GetEventInfo}>?
+        pub var validateEventCapability: Capability<&WRLEvent.Event{WRLEvent.Validable}>?
 
         init() {
             self.validateEventCapability = nil;
         }
 
-        pub fun receiveValidator(cap: Capability<&WRLEvent.Event{WRLEvent.Validable, WRLEvent.GetEventInfo}>) {
+        pub fun receiveValidator(cap: Capability<&WRLEvent.Event{WRLEvent.Validable}>) {
             pre {
                 cap.borrow() != nil: "Invalid Validator capability";
             }
 
             self.validateEventCapability = cap;
-        }
-
-
-        pub fun getEventInfo(): EventInfo {
-            pre {
-                self.validateEventCapability != nil: "No event info capability"
-            }
-
-            let eventRef = self.validateEventCapability!.borrow()!
-
-            return eventRef.getEventInfo()
         }
 
         pub fun validateEvent() {

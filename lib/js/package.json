@@ -1,7 +1,7 @@
 {
   "name": "js",
   "version": "1.0.0",
-  "description": "",
+  "description": "Integration testing for WRL Events",
   "main": "jest.config.js",
   "directories": {
     "test": "test"

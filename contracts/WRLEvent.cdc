@@ -4,9 +4,6 @@
  * SPDX-License-Identifier: (MIT)
  */
 
-import Lilium from 0xa9e5922489486101
-// import Lilium from 0xf8d6e0586b0a20c7
-
 pub contract WRLEvent {
     pub resource interface Validable {
         pub fun validate()

@@ -5,7 +5,6 @@
       "serviceAccount": "emulator-account"
     }
   },
-  "contracts": {},
   "networks": {
     "emulator": "127.0.0.1:3569",
     "mainnet": "access.mainnet.nodes.onflow.org:9000",
@@ -17,5 +16,12 @@
       "key": "8e3983030d2af1fa01c078241ad7f699d492e0239247f38d5a96cb959e436531"
     }
   },
-  "deployments": {}
+  "deployments": {
+    "emulator": {
+      "emulator-account": ["WRLEvent"]
+    } 
+  },
+  "contracts": {
+    "WRLEvent": "../../contracts/WRLEvent.cdc"
+  }
 }

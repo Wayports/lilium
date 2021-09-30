@@ -1,0 +1,27 @@
+{
+	"emulators": {
+		"default": {
+			"port": 3569,
+			"serviceAccount": "emulator-account"
+		}
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "2ff6b9887437eb91302bc9146d60137236763865b995f7462f4ed245d38c7cc2"
+		}
+	},
+  	"deployments": {
+  	  "emulator": {
+  	    "emulator-account": ["WRLEvent"]
+  	  } 
+  	},
+  	"contracts": {
+  	  "WRLEvent": "../../contracts/WRLEvent.cdc"
+  	}
+}

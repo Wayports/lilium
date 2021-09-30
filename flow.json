@@ -6,9 +6,9 @@
     }
   },
   "contracts": {
-    "Lilium": "./coin/cadance/contracts/Lilium.cdc",
-    "FungibleToken": "./coin/cadance/contracts/FungibleToken.cdc",
-    "WRLEvent": "./coin/cadance/contracts/WRLEvent.cdc"
+    "Lilium": "./contracts/Lilium.cdc",
+    "FungibleToken": "./contracts/FungibleToken.cdc",
+    "WRLEvent": "./contracts/WRLEvent.cdc"
   },
   "networks": {
     "emulator": "127.0.0.1:3569",

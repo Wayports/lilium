@@ -187,8 +187,8 @@ pub contract WRLEvent {
         return <- create EventViewer()
     }
 
-    pub fun createBot(): @Bot {
-        return <- create Bot()
+    pub fun createOracle(): @Oracle {
+        return <- create Oracle()
     }
 
     pub resource interface ValidatorReceiver {
@@ -271,7 +271,7 @@ pub contract WRLEvent {
         pub fun receiveResultSetter(cap: Capability<&WRLEvent.Event{WRLEvent.ResultSetter}>)
     }
 
-    pub resource Bot: ResultSetterReceiver {
+    pub resource Oracle: ResultSetterReceiver {
         pub var resultSetter: Capability<&WRLEvent.Event{WRLEvent.ResultSetter}>?
 
         init() {

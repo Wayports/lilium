@@ -23,3 +23,11 @@ The purchase of the asset will be made via an Exchange inside [Quantum](https://
 Lilium will also be used in the upcoming NFT marketplace, Unum, which will allow members of the Wayports community to sell their creations in exchange for Lilium.
 
 The last use case for Lilium will be the staking program, available for subscribers of the Quantum Premium plan, where users will receive more Lilium in exchange of the amount of cryptocurrency they stake in the staking pool.
+
+## Tests
+
+The tests for Lilium contract are written in go, therefore in order to run it one should:
+`cd lib/go`
+
+and run the tests by running the command:
+`make test`

@@ -27,7 +27,20 @@ The last use case for Lilium will be the staking program, available for subscrib
 ## Tests
 
 The tests for Lilium contract are written in go, therefore in order to run it one should:
-`cd lib/go`
+```
+cd lib/go
+```
 
 and run the tests by running the command:
-`make test`
+```
+make test
+```
+
+While the WRLEvent contract have it's test written in javascript, one should
+```
+cd lib/js
+```
+and run the tests by running the command:
+```
+npm test
+```

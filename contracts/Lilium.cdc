@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: (MIT)
  */
 
-// import FungibleToken from 0xFUNGIBLETOKENADDRESS
-import FungibleToken from 0xee82856bf20e2aa6
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
 
 pub contract Lilium: FungibleToken {
 

@@ -11,7 +11,7 @@
 // The Administrador will register a new event on chain and will give persion to
 // another account to insert the result of that event.
 // Once the results are updated, a set of Stewards will analyze the race and judge
-// if any penalty should be apply to one or more participants due to race incidents.
+// if any penalty should be applied to one or more participants due to race incidents.
 // After the analysis, the Stewards will be able to validate the Event.
 //
 pub contract WRLEvent {
@@ -63,7 +63,7 @@ pub contract WRLEvent {
 
     // ResultSetterReceiver
     // Implemented by the Oracle resource, exposes publicly the method that will allow the Administrator
-    // resource to deposit a capability that will allow the Oracle to set the event results
+    // resource to deposit a capability to Oracle responsible for set the event results
     //
     pub resource interface ResultSetterReceiver {
         pub fun receiveResultSetter(cap: Capability<&WRLEvent.Event{WRLEvent.ResultSetter}>)
@@ -73,185 +73,185 @@ pub contract WRLEvent {
     // This struct is used to return information about an Event
     //
     pub struct EventInfo {
-      pub let name: String
-      pub let baseReward: UFix64
-      pub let rewards: [UFix64; 3]
-      pub let participants: [Address; 3]
+        pub let name: String
+        pub let baseReward: UFix64
+        pub let rewards: [UFix64; 3]
+        pub let participants: [Address; 3]
 
-      pub var finished: Bool
-      pub var validations: Int
-      pub var  resultsUpdated: Bool
-      pub var finalStands: {Address:UInt64}
-      pub var penalties: {Address:UInt64}
+        pub var finished: Bool
+        pub var validations: Int
+        pub var  resultsUpdated: Bool
+        pub var finalStands: {Address:UInt64}
+        pub var penalties: {Address:UInt64}
 
-      init(
-        _ name: String
-        _ baseReward: UFix64
-        _ rewards: [UFix64; 3]
-        _ participants: [Address; 3]
-        _ finished: Bool
-        _ validations: Int
-        _ resultsUpdated: Bool
-        _ finalStands: {Address:UInt64}
-        _ penalties: {Address:UInt64}
-      ) {
-        self.name = name
-        self.participants = participants
-        self.rewards = rewards
-        self.baseReward = baseReward
-        self.finished = finished
-        self.resultsUpdated = resultsUpdated
-        self.validations = validations
-        self.finalStands = finalStands;
-        self.penalties = penalties;
-      }
+        init(
+            _ name: String
+            _ baseReward: UFix64
+            _ rewards: [UFix64; 3]
+            _ participants: [Address; 3]
+            _ finished: Bool
+            _ validations: Int
+            _ resultsUpdated: Bool
+            _ finalStands: {Address:UInt64}
+            _ penalties: {Address:UInt64}
+        ) {
+            self.name = name
+            self.participants = participants
+            self.rewards = rewards
+            self.baseReward = baseReward
+            self.finished = finished
+            self.resultsUpdated = resultsUpdated
+            self.validations = validations
+            self.finalStands = finalStands;
+            self.penalties = penalties;
+        }
     }
 
     // Event
     // This resource holds all the information about a given Event on the Wayport Racing League
     //
     pub resource Event: Validable, ResultSetter, GetEventInfo {
-      // Name of the event
-      pub let name: String
-      // The base reward in Lilium that all driver will receive
-      // at the end of the race
-      pub let baseReward: UFix64
-      // An in-order array with the amount of Lilium that each driver
-      // will receive at the end of the race according to the final stands
-      pub let rewards: [UFix64; 3]
-      // A list with all the participants addresses
-      pub let participants: [Address; 3]
+        // Name of the event
+        pub let name: String
+        // The base reward in Lilium that all drivers will receive
+        // at the end of the race
+        pub let baseReward: UFix64
+        // An in-order array with the amount of Lilium that each driver
+        // will receive at the end of the race according to the final stands
+        pub let rewards: [UFix64; 3]
+        // A list with all the participants addresses
+        pub let participants: [Address; 3]
 
-      // A flag that indicates if the event is finished
-      pub var finished: Bool
-      // A flag that indicates if the Oracle has updated the results
-      pub var  resultsUpdated: Bool
-      // A counter that indicates how many Steward had validated the event
-      pub var validations: Int
-      // A dictionary composed by the participant address and the amount of time
-      // that he/she took to complet the event
-      pub var finalStands: {Address:UInt64}
-      // A dictionary containing all the penalties that were given in the event by Stewards
-      pub var penalties: {Address:UInt64}
+        // A flag that indicates if the event is finished
+        pub var finished: Bool
+        // A flag that indicates if the Oracle has updated the results
+        pub var  resultsUpdated: Bool
+        // A counter that indicates how many Steward had validated the event
+        pub var validations: Int
+        // A dictionary composed by the participant address and the amount of time
+        // that he/she took to complet the event
+        pub var finalStands: {Address:UInt64}
+        // A dictionary containing all the penalties that were applied in the event by Stewards
+        pub var penalties: {Address:UInt64}
 
-      init(
-          name: String,
-          participants: [Address; 3],
-          rewards: [UFix64; 3],
-          baseReward: UFix64,
-      ) {
-        self.name = name
-        self.participants = participants
-        self.rewards = rewards
-        self.baseReward = baseReward
-        self.finished = false
-        self.resultsUpdated = false
-        self.validations = 0
-        self.finalStands = {};
-        self.penalties = {};
-      }
+        init(
+            name: String,
+            participants: [Address; 3],
+            rewards: [UFix64; 3],
+            baseReward: UFix64,
+        ) {
+            self.name = name
+            self.participants = participants
+            self.rewards = rewards
+            self.baseReward = baseReward
+            self.finished = false
+            self.resultsUpdated = false
+            self.validations = 0
+            self.finalStands = {};
+            self.penalties = {};
+        }
 
-      // setResults
-      // This function updated the race stands, not allowing the update to happen
-      // if it's already been updated or if the race is finished yet
-      //
-      pub fun setResults(stands: {Address:UInt64}) {
-          pre {
-            self.finished: "Race is not finished"
-            !self.resultsUpdated: "Results were alredy updated"
-          }
-
-          self.finalStands = stands;
-          self.resultsUpdated = true;
-      }
-
-      // addPenalty
-      // Adds a time penalty to a given participant. The penalty is applied to the finalStands dictionary
-      // and also to the penalties dictionary in order to keep track of all the penalties applied on a given event
-      //
-      pub fun addPenalty(participant: Address, time: UInt64) {
-          pre {
-            // The address must be among the address of the final stands
-            self.finalStands.containsKey(participant): "The address was not registered in the event"
-            // Only one penalty per event
-            !self.penalties.containsKey(participant): "The participant already received a penalty in this event"
-          }
-
-          let participantTime = self.finalStands[participant]!
-
-          self.finalStands[participant] = participantTime + time
-          self.penalties.insert(key: participant, time)
-      }
-
-      // validate
-      // Increase the validation counter by 1 unit
-      //
-      pub fun validate() {
-          pre {
-            self.resultsUpdated: "Results were not updated"
-          }
-
-          self.validations = self.validations + 1
-      }
-
-      // end
-      // Sets the finished flag to true indicating that the event is over
-      //
-      pub fun end() {
-          pre {
-              !self.finished: "Race is already finished"
-          }
-
-          self.finished = true
-      }
-
-      // sortByTime
-      // Returns an array of addresses sorted by finishing time of all participants
-      //
-      pub fun sortByTime(): [Address] {
-          pre {
-            self.resultsUpdated: "Results were not updated"
-          }
-
-          let rewardOrder: [Address] = []
-
-          var i = 0
-          for participant in self.finalStands.keys {
-            let currentParticipantTime = self.finalStands[participant]!
-
-            var j = 0
-            while(j < rewardOrder.length) {
-                let participantTime = self.finalStands[rewardOrder[j]]!
-
-                if currentParticipantTime < participantTime {
-                    break
-                }
-
-                j = j + 1
+        // setResults
+        // This function updated the race stands, not allowing the update to happen
+        // if it's already been updated or if the race is not finished yet
+        //
+        pub fun setResults(stands: {Address:UInt64}) {
+            pre {
+                self.finished: "Race is not finished"
+                !self.resultsUpdated: "Results were alredy updated"
             }
 
-            rewardOrder.insert(at: j, participant)
-          }
+            self.finalStands = stands;
+            self.resultsUpdated = true;
+        }
 
-          return rewardOrder;
-      }
+        // addPenalty
+        // Adds a time penalty to a given participant. The penalty is applied to the finalStands dictionary
+        // and also to the penalties dictionary in order to keep track of all the penalties applied on a given event
+        //
+        pub fun addPenalty(participant: Address, time: UInt64) {
+            pre {
+                // The address must be among the address of the final stands
+                self.finalStands.containsKey(participant): "The address was not registered in the event"
+                // Only one penalty per event
+                !self.penalties.containsKey(participant): "The participant already received a penalty in this event"
+            }
 
-      // getEventInfo
-      // Returns all fields of the Event
-      //
-      pub fun getEventInfo(): EventInfo {
-          return EventInfo(
-            self.name,
-            self.baseReward,
-            self.rewards,
-            self.participants,
-            self.finished,
-            self.validations,
-            self.resultsUpdated,
-            self.finalStands,
-            self.penalties,
-        )
-      }
+            let participantTime = self.finalStands[participant]!
+
+            self.finalStands[participant] = participantTime + time
+            self.penalties.insert(key: participant, time)
+        }
+
+        // validate
+        // Increase the validation counter by 1 unit
+        //
+        pub fun validate() {
+            pre {
+              self.resultsUpdated: "Results were not updated"
+            }
+
+            self.validations = self.validations + 1
+        }
+
+        // end
+        // Sets the finished flag to true indicating that the event is over
+        //
+        pub fun end() {
+            pre {
+                !self.finished: "Race is already finished"
+            }
+
+            self.finished = true
+        }
+
+        // sortByTime
+        // Returns an array of addresses sorted by finishing time of all participants
+        //
+        pub fun sortByTime(): [Address] {
+            pre {
+                self.resultsUpdated: "Results were not updated"
+            }
+
+            let rewardOrder: [Address] = []
+
+            var i = 0
+            for participant in self.finalStands.keys {
+                let currentParticipantTime = self.finalStands[participant]!
+
+                var j = 0
+                while(j < rewardOrder.length) {
+                    let participantTime = self.finalStands[rewardOrder[j]]!
+
+                    if currentParticipantTime < participantTime {
+                        break
+                    }
+
+                    j = j + 1
+                }
+
+                rewardOrder.insert(at: j, participant)
+            }
+
+            return rewardOrder;
+        }
+
+        // getEventInfo
+        // Returns all fields of the Event
+        //
+        pub fun getEventInfo(): EventInfo {
+            return EventInfo(
+                self.name,
+                self.baseReward,
+                self.rewards,
+                self.participants,
+                self.finished,
+                self.validations,
+                self.resultsUpdated,
+                self.finalStands,
+                self.penalties,
+          )
+        }
     }
 
     // EventViewer
@@ -279,7 +279,7 @@ pub contract WRLEvent {
         }
 
         // getEventInfo
-        // Uses the received capability to returns the information about an Event
+        // Uses the received capability to return the information about an Event
         //
         pub fun getEventInfo(): EventInfo {
             pre {
@@ -294,7 +294,7 @@ pub contract WRLEvent {
 
     // Steward
     // The Steward resource interacts with some functions in the Event resource
-    // to update information about penalties and validates the results updated by the Oracle
+    // to update information about penalties and validate the results updated by the Oracle
     // 
     pub resource Steward: ValidatorReceiver {
         // The capability that allows the interaction with a given Event
@@ -331,7 +331,7 @@ pub contract WRLEvent {
 
         // addPenalty
         // Takes a participant address and an amount of time to be added to the finishing time
-        // to a participant in order to penalize for any incidents that took place in the Event
+        // of that participant, in order to penalize for any incidents that took place in the Event
         //
         pub fun addPenalty(participant: Address, time: UInt64) {
             pre {
@@ -384,7 +384,7 @@ pub contract WRLEvent {
 
     // Administrator
     // The Administrator resource is the only resource able to create new
-    // event resources and therefore to delegate Validators and ResultSetters
+    // event resources, therefore the only one able to delegate Validators and ResultSetters
     pub resource Administrator {
         pub fun createEvent(
             eventName: String,
@@ -410,6 +410,7 @@ pub contract WRLEvent {
 
     // createEventViewer
     // Creates a new instance of EventViewer resource and returns it
+
     //
     pub fun createEventViewer(): @EventViewer {
         return <- create EventViewer()
